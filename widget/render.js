@@ -2,6 +2,8 @@ const { chromium } = require("playwright");
 const path = require("path");
 
 const ITEM_SELECTOR = ".mdlw-item-7QZz6e";
+const HEADER_SELECTOR = ".mdlw-header-7QZz6e a";
+const WIDGET_HEADER = "視聴中 / Currently Watching";
 
 async function getNativeTitle(browser, url, displayTitle) {
     const detailPage = await browser.newPage();
@@ -101,6 +103,10 @@ async function getNativeTitle(browser, url, displayTitle) {
     if (!notoFontsLoaded) {
         throw new Error("Noto Sans fonts did not load before rendering.");
     }
+
+    await page.locator(HEADER_SELECTOR).evaluate((headerLink, headerText) => {
+        headerLink.textContent = headerText;
+    }, WIDGET_HEADER);
 
     const widget = await page.locator("#capture");
 
