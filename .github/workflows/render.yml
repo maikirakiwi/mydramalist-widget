@@ -1,0 +1,42 @@
+name: Render Widget
+
+on:
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+
+  render:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: |
+          cd widget
+          npm install
+
+      - run: |
+          cd widget
+          npx playwright install chromium
+
+      - run: |
+          cd widget
+          node render.js
+
+      - name: Commit image
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update widget image
