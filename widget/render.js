@@ -36,6 +36,7 @@ async function getNativeTitle(browser, url, displayTitle) {
     });
 
     const page = await browser.newPage({
+        deviceScaleFactor: 2,
         viewport: {
             width: 420,
             height: 1000
